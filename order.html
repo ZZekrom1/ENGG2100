@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Order Amphibulance</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #07090f;               /* ✏️ CHANGE: page background color */
+      --card: #111827;             /* ✏️ CHANGE: form card background color */
+      --border: rgba(100,140,255,0.12);
+      --accent: #1e4fd8;           /* ✏️ CHANGE: accent color (badge, input focus, highlighted word) */
+      --accent2: #cc2222;          /* ✏️ CHANGE: secondary red accent */
+      --text: #eef2ff;             /* ✏️ CHANGE: main text color */
+      --muted: #7a8bb0;            /* ✏️ CHANGE: secondary/grey text color */
+      --radius: 16px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7,9,15,0.88);
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--accent); }
+    .back-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--text); }
+
+    /* ── MAIN CONTENT ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    main::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(30,79,216,0.12) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* ── FORM CARD ── */
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 52px 48px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.5s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(30,79,216,0.12);
+      border: 1px solid rgba(30,79,216,0.3);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 99px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .form-card h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+    .form-card h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+    .form-card .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    /* ── FORM FIELDS ── */
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .field:last-of-type { margin-bottom: 0; }
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      width: 100%;
+    }
+    input::placeholder { color: var(--muted); }
+    input:focus {
+      border-color: var(--accent);
+      background: rgba(30,79,216,0.05);
+    }
+
+    /* ── SUBMIT BUTTON — UIverse xueyuantan/rotten-pig-19 ── */
+    .submit-wrap {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+    }
+    .uiverse-btn {
+      width: 9em;
+      height: 3em;
+      border-radius: 30em;
+      font-size: 15px;
+      font-family: inherit;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      box-shadow: 6px 6px 12px #05080e, -6px -6px 12px #1a2540;
+      background: #1e4fd8;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .uiverse-btn::before {
+      content: '';
+      width: 0;
+      height: 3em;
+      border-radius: 30em;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-image: linear-gradient(to right, #cc2222 0%, #1e4fd8 100%);
+      transition: .5s ease;
+      display: block;
+      z-index: -1;
+    }
+    .uiverse-btn:hover::before { width: 9em; }
+
+    /* ── SUCCESS MESSAGE (hidden by default) ── */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 24px 0 8px;
+    }
+    .success-msg .checkmark {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+    .success-msg h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .success-msg p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+    .privacy-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.78rem;
+      margin-top: 20px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    footer p { color: var(--muted); font-size: 0.8rem; }
+    footer a { color: var(--muted); text-decoration: none; font-size: 0.8rem; }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .form-card { padding: 36px 24px; }
+      .field-row { grid-template-columns: 1fr; }
+      footer { padding: 20px 24px; flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="logo" href="index.html">
+      <img src="Logo.png" alt="Logo" style="height: 96px; width: auto; display: block;">
+    </a>
+    <a class="back-link" href="index.html">← Back to home</a>
+  </nav>
+
+  <!-- MAIN FORM -->
+  <main>
+    <div class="form-card">
+
+      <div class="form-badge">✦ Step 1 of 1</div>
+
+      <h1>Order your <em>Amphibulance</em> Today</h1>
+
+      <hr class="divider"/>
+
+      <!-- FORM — no <form> tag needed, handled by JS below -->
+      <div id="order-form">
+
+        <div class="field-row">
+          <div class="field">
+            <label for="first-name">First Name</label>
+            <input
+              type="text"
+              id="first-name"
+              placeholder="Keanu"
+              autocomplete="given-name"
+            />
+          </div>
+          <div class="field">
+            <label for="last-name">Last Name</label>
+            <input
+              type="text"
+              id="last-name"
+              placeholder="Rangayah"
+              autocomplete="family-name"
+            />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="kr@example.com"
+            autocomplete="email"
+          />
+        </div>
+
+        <!-- Submit button — UIverse xueyuantan/rotten-pig-19 -->
+        <div class="submit-wrap">
+          <button class="uiverse-btn" onclick="handleSubmit()">
+            Submit<!-- ✏️ CHANGE: button label -->
+          </button>
+        </div>
+
+        <p class="privacy-note">🔒 Your information is kept private and never shared.<!-- ✏️ CHANGE: small privacy note below the button --></p>
+
+      </div>
+
+      <!-- SUCCESS MESSAGE — shown after submit -->
+      <div class="success-msg" id="success-msg">
+        <div class="checkmark">✅<!-- ✏️ CHANGE: emoji shown on success --></div>
+        <h2>You're all set!<!-- ✏️ CHANGE: success heading --></h2>
+        <p>Thanks for your order. We'll be in touch at the email you provided.<!-- ✏️ CHANGE: success message --></p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 TideRunner — All rights reserved</p>
+    <a href="index.html">← Back to home</a>
+  </footer>
+
+  <script>
+    function handleSubmit() {
+      const firstName = document.getElementById('first-name').value.trim();
+      const lastName  = document.getElementById('last-name').value.trim();
+      const email     = document.getElementById('email').value.trim();
+
+      // Basic validation
+      if (!firstName || !lastName || !email) {
+        alert('Please fill in all fields before submitting.');  
+        return;
+      }
+      if (!email.includes('@') || !email.includes('.')) {
+        alert('Please enter a valid email address.');  
+        return;
+      }
+
+      // Hide form, show success message
+      document.getElementById('order-form').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
